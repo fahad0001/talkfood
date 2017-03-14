@@ -6,6 +6,17 @@
         <div class="box">
             <div class="box-header">
               <h3 class="box-title">Restuarants</h3>
+              <div class=" pull-right">
+              
+                  <div class="col-sm-2 dropdown">
+        <button class="btn btn-primary dropdown-toggle" id="menu1" type="button" data-toggle="dropdown">Availability
+        <span class="caret"></span></button>
+        <ul id="menuavail" class="dropdown-menu" role="menu" aria-labelledby="menu1">
+            <li role="presentation"><a data-value="Online" role="menuitem" tabindex="-1" href="{{URL::to('admin/updateavailibility/Online')}}">Online</a></li>
+            <li role="presentation"><a data-value="Offline" role="menuitem" tabindex="-1" href="{{URL::to('admin/updateavailibility/Offline')}}">Offline</a></li>  
+        </ul>
+    </div>
+              </div>
             </div>
             <!-- /.box-header -->
             <div class="box-body table-responsive no-padding">
@@ -61,4 +72,3 @@
     </div>
 </div>
 @stop
-

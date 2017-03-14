@@ -29,6 +29,14 @@ class dashboard extends Controller
         $rests=Restaurant::paginate(15);
         return view('admin.index',compact('rests'));
     }
+
+     // Update Availibility Status of All Resturants
+    public function updateAvailibility($status)
+    {
+         $rests=Restaurant::paginate(15);
+        Restaurant::query()->update(['rest_avail' => $status]);
+        return view('admin.index',compact('rests'));
+    }
     
     public function viewcustomer()
     {

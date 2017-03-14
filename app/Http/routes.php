@@ -98,8 +98,8 @@ Route::get('admin/deletePromotion/{id}','promotions@deletePromotion');
    Route::get('admin/viewallorderdetails/{id}', 'dashboard@viewallOrderDetails');
     Route::get('admin/viewallorderdetails/delete/{id}', 'dashboard@viewallOrderdelete');
 
-
-
+// Update Availibility Status of All Resturants
+Route::get('admin/updateavailibility/{status}','dashboard@updateAvailibility');
 });
 
 Route::group(['middleware' => 'restMiddleware'], function () {
@@ -144,6 +144,9 @@ Route::get('restaurant/viewsalereport','restdashboard@ViewSaleReport');
 // Update Availibility
 Route::get('restaurant/updateavailibility','restdashboard@updateAvailibility');
 });
+
+
+
 
 Route::group(['middleware' => 'custMiddleware'], function () {
 //customer
