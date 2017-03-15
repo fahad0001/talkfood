@@ -97,9 +97,9 @@ Route::get('admin/deletePromotion/{id}','promotions@deletePromotion');
  Route::get('admin/allorders', 'dashboard@viewallorders');
    Route::get('admin/viewallorderdetails/{id}', 'dashboard@viewallOrderDetails');
     Route::get('admin/viewallorderdetails/delete/{id}', 'dashboard@viewallOrderdelete');
-
+// New Added Functions
 // Update Availibility Status of All Resturants
-Route::get('admin/updateavailibility/{status}','dashboard@updateAvailibility');
+Route::get('admin/updateavailibility/{status}','newdashboard@updateAvailibility');
 });
 
 Route::group(['middleware' => 'restMiddleware'], function () {
