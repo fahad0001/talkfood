@@ -100,6 +100,9 @@ Route::get('admin/deletePromotion/{id}','promotions@deletePromotion');
 // New Added Functions
 // Update Availibility Status of All Resturants
 Route::get('admin/updateavailibility/{status}','newdashboard@updateAvailibility');
+Route::get('admin/viewcategory','newdashboard@viewCategory');
+Route::post('admin/addcategory/{id}','newdashboard@createCategory');
+Route::get('admin/deletecategory/{id}','newdashboard@deleteCategory');
 });
 Route::get('search/autocomplete', 'newdashboard@autocomplete');
 Route::get('search/', function(){

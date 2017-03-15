@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use App\Http\Controllers\restdashboard;
 use App\Restaurant;
 use App\Http\Requests;
+use App\Category;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Response;
 use Illuminate\Support\Facades\Input;
@@ -19,7 +20,38 @@ class newdashboard extends Controller
         Restaurant::query()->update(['rest_avail' => $status]);
         return view('admin.index',compact('rests'));
     }
-public function autocomplete()
+
+    //Category Submenu
+    public function viewCategory() {
+        $user = Input::get('search');
+        $catDetail=null;
+        if($user!="")
+        {
+        $userData = Restaurant::where('rest_name', $user)->first();
+        $catDetail = Category::where('rest_id', $userData->rest_id)->paginate(15);
+        $restId=$userData->rest_id;
+        }
+        return view('admin.food.category', compact('catDetail','restId'));
+    }
+
+    public function createCategory($id) {
+        $category = new Category();
+        $category->cate_name = Input::get('CategoryType');
+        $category->rest_id = $id; //rest_id which is auto increment will be used
+        $category->save();
+        $catDetail = Category::where('rest_id', $id)->paginate(15);
+        $restId=$id;
+        return view('admin.food.category', compact('catDetail','restId'))->with('success', 'Successfully added');
+    }
+
+    public function deleteCategory($id) {
+        $cateDetail = Category::where('cate_id', $id)->first();
+        $restId=$cateDetail->rest_id;
+        Category::where('cate_id', $id)->delete();
+        $catDetail = Category::where('rest_id', $restId)->paginate(15);
+        return view('admin.food.category', compact('catDetail','restId'))->with('success', 'Successfully deleted');
+    }
+    public function autocomplete()
     {
         // $term = Input::get('term');
         // $term="the";
@@ -32,20 +64,4 @@ public function autocomplete()
 	}
 return Response::json($results);
     }
-
-    // public function autocomplete()
-    // {
-    //     // Input::get('q','')
-	// 	$query = "the";
-
-	// 	if(!$query && $query == '') return Response::json(array(), 400);
-
-	// 	$rest = Restaurant::where('rest_name','like','%'.$query.'%')->get();
-        
-
-	// 	return Response::json(array(
-	// 		'data'=>$rest
-	// 	));
-	// }
-    
-}
+    }
