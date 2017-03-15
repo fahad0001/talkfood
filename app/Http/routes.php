@@ -101,6 +101,10 @@ Route::get('admin/deletePromotion/{id}','promotions@deletePromotion');
 // Update Availibility Status of All Resturants
 Route::get('admin/updateavailibility/{status}','newdashboard@updateAvailibility');
 });
+Route::get('search/autocomplete', 'newdashboard@autocomplete');
+Route::get('search/', function(){
+    return view('admin.search');
+});
 
 Route::group(['middleware' => 'restMiddleware'], function () {
 //restaurant
