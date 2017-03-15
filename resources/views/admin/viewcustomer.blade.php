@@ -1,3 +1,7 @@
+<?php
+ $page_num   =   (int) (!isset($_GET['page']) ? 1 : $_GET['page']);
+ $start_num =((($page_num*15)-15)+1);
+ ?>
 @extends('layout.master')
 
 @section('content')
@@ -22,9 +26,9 @@
                    <th></th>
                 </tr>
                 
-                        @foreach($rests as $rest)
+                        @foreach($rests as $index =>$rest)
                             <tr>
-                            <td>{{$rest->id}}</td>
+                            <td>{{$index+$start_num}}</td>
                             <td>{{$rest->first_name}}</td>
                             <td>{{$rest->last_name}}</td>
                             <td>{{$rest->email}}</td>

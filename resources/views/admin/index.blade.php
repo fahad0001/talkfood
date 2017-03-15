@@ -1,3 +1,7 @@
+<?php
+ $page_num   =   (int) (!isset($_GET['page']) ? 1 : $_GET['page']);
+ $start_num =((($page_num*15)-15)+1);
+ ?>
 @extends('layout.master')
 
 @section('content')
@@ -35,10 +39,10 @@
                   <th></th>
                    <th></th>
                 </tr>
-                
-                        @foreach($rests as $rest)
+               
+                        @foreach($rests as $index =>$rest)
                             <tr>
-                            <td>{{$rest->rest_id}}</td>
+                            <td>{{$index+$start_num}}</td>
                             <td>{{$rest->rest_name}}</td>
                             <td>{{$rest->kitchen_type}}</td>
                             <td>{{$rest->created_at->format('m/d/Y')}}</td>
