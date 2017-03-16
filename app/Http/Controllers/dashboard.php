@@ -29,6 +29,8 @@ class dashboard extends Controller
         $rests=Restaurant::paginate(15);
         return view('admin.index',compact('rests'));
     }
+
+   
     
     public function viewcustomer()
     {
