@@ -67,6 +67,7 @@ Route::post('login','login@dologin');
 
 Route::group(['middleware' => 'adminMiddleware'], function () {
 //admin
+
 Route::get('admin/viewcustomer','dashboard@viewcustomer');
 Route::get('admin/viewCustomerAddress/{id}','dashboard@viewCustomerAddress');
 Route::get('admin/deleteCustomer/{id}','dashboard@deleteCustomer');
@@ -105,6 +106,10 @@ Route::post('admin/addcategory/{id}','newdashboard@createCategory');
 Route::get('admin/deletecategory/{id}','newdashboard@deleteCategory');
 });
 Route::get('search/autocomplete', 'newdashboard@autocomplete');
+
+//order status update
+Route::post('newdashboard/updatestatus','newdashboard@updateStatus');
+
 Route::get('search/', function(){
     return view('admin.search');
 });

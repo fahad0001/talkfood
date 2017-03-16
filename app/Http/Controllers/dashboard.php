@@ -28,10 +28,8 @@ class dashboard extends Controller
     {
         $rests=Restaurant::paginate(15);
         return view('admin.index',compact('rests'));
-    }
+    }   
 
-   
-    
     public function viewcustomer()
     {
         $rests=User::where('role','cus')->paginate(15);
@@ -260,7 +258,7 @@ class dashboard extends Controller
            $data = restdashboard::orderdetailData($id);
         $orderinfo =  OrderInfo::with('customer')->where('order_id', $id)->first();
          $orderstatus =  OrderInfo::where('order_id', $id)->first();
-        
+        $restName=Restaurant::where('rest_id',$orderstatus->rest_id)->first()->rest_name;
         $customeraddress = CustomerAddress::where('cus_id', $orderinfo['customer']->id)->get();
         $orderinfo['customerAddress'] = $customeraddress[0];
 //        $items = $data[1];
@@ -288,10 +286,10 @@ class dashboard extends Controller
         $shipping = $shipping + $shippingtax;
         $total = $subtotal + $tax + $shipping;
 
-        $orderstatus->order_status="processing";
+        //$orderstatus->order_status="processing";
         $orderstatus->save();
         // return var_dump($items->toArray());
-        return view('admin.viewallorderdetails', compact('orderinfo', 'cart', 'total','orderstatus'));
+        return view('admin.viewallorderdetails', compact('orderinfo', 'cart', 'total','orderstatus','restName'));
     }
     
      public function viewallOrderdelete($id) {
