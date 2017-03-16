@@ -1,7 +1,7 @@
 <?php
 
 namespace App\Console;
-
+//use Illuminate\Support\Facades\Log;
 use Illuminate\Console\Scheduling\Schedule;
 use Illuminate\Foundation\Console\Kernel as ConsoleKernel;
 
@@ -13,7 +13,7 @@ class Kernel extends ConsoleKernel
      * @var array
      */
     protected $commands = [
-        // Commands\Inspire::class,
+       //\App\Console\Commands\Inspire::class,
     ];
 
     /**
@@ -26,5 +26,18 @@ class Kernel extends ConsoleKernel
     {
         // $schedule->command('inspire')
         //          ->hourly();
+
+        // $schedule->call(function () {
+        //     var_dump('fahad');
+        //     Log::info('Showing user profile for user: ');
+        // })->everyMinute();
+
+        // // $schedule->call(function () {
+        // //     DB::table('Restaurant')->AvailibilityOn();
+        // // })->dailyAt('17:50');
+        
+        // // $schedule->call(function () {
+        // //     DB::table('Restaurant')->AvailibilityOff();
+        // // })->dailyAt('17:55');
     }
 }
