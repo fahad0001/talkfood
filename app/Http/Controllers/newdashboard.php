@@ -7,22 +7,12 @@ use App\Http\Controllers\restdashboard;
 use App\Restaurant;
 use App\Http\Requests;
 use App\Category;
-use App\OrderInfo;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Response;
 use Illuminate\Support\Facades\Input;
 
 class newdashboard extends Controller
 {
-    // update status of order
-    public function updateStatus(Request $request)
-    {
-        $orderDetails=OrderInfo::where('order_id',$request['orderId'])->first();
-        $orderDetails->order_status=$request['status'];
-        $orderDetails->save();
-        return $orderDetails->order_status;
-    }
-
       // Update Availibility Status of All Resturants
     public function updateAvailibility($status)
     {
