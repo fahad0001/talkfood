@@ -60,7 +60,6 @@
                 </a>
 
             </li>
-<<<<<<< HEAD
            <li class="treeview">
         <a href="{{URL::to('admin/menu')}}">
             <i class="fa fa-money"></i> <span>Menu</span>
@@ -73,7 +72,4 @@
             <!-- <li><a href="{{URL::to('restaurant/viewmenuitem')}}"><i class="fa fa-circle-o"></i> View Menu Item</a></li>
           </ul>-->
     </li>
-=======
-           
->>>>>>> 0695fa062d0a9b08211c65c143d33bf76242a466
-        </ul>
+</ul>
