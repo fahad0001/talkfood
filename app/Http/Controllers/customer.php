@@ -99,6 +99,8 @@ class customer extends Controller {
             $item['quantity'] = 1;
             $item['key']=uniqid();
             $cart = array(0 => $item, 'totalquantity' => 1);
+
+
             Session::put('cart', $cart);
             Session::put('currentrest', $item["rest_id"]);
 
@@ -113,6 +115,7 @@ class customer extends Controller {
             }
 
             $cart = Session::get('cart');
+
             Session::forget('cart');
 
             $key = array_search($id, array_column($cart, 'food_id'));
@@ -129,7 +132,6 @@ class customer extends Controller {
 
                 array_push($cart, $item);
                 $cart['totalquantity'] ++;
-                dd($cart);
                 Session::put('cart', $cart);
                 return "new item added";
             }
