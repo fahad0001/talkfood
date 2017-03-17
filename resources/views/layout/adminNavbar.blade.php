@@ -72,5 +72,5 @@
             <!-- <li><a href="{{URL::to('restaurant/viewmenuitem')}}"><i class="fa fa-circle-o"></i> View Menu Item</a></li>
           </ul>-->
     </li>
+</ul>
 
-        </ul>
