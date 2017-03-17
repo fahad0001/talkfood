@@ -23,12 +23,12 @@
                 <div class="form-group">
                     <label class="control-label col-sm-2"  for="firstname">First Name</label>
                     <div class="col-sm-4">
-                        <input type="text" class="form-control" name="firstname" placeholder=" First Name">
+                        <input type="text" class="form-control" value="@if(isset($firstname)){{$firstname}}@endif" name="firstname" placeholder=" First Name">
                         
                     </div>
                     <label class="control-label col-sm-2" for="lastname">Last Name</label>
                     <div class="col-sm-4">
-                        <input type="text" class="form-control" name="lastname"  placeholder=" Last Name">
+                        <input type="text" class="form-control" value="@if(isset($lastname)){{$lastname}}@endif" name="lastname"  placeholder=" Last Name">
                     </div>
                 </div>
                 <div class="form-group">
@@ -174,7 +174,7 @@
                 <div class="form-group">
                     <label class="control-label col-sm-2" for="email">Email:</label>
                     <div class="col-sm-10">
-                        <input type="email" class="form-control" name="email" placeholder=" Email">
+                        <input type="email" class="form-control" value="@if(isset($email)){{$email}}@endif" name="email" placeholder=" Email">
                         
                     </div>
                 </div>
@@ -192,6 +192,8 @@
                         
                     </div>
                 </div>
+                <input id="provider_name" name="provider_name" type="hidden" value="@if(isset($provider_name)){{$provider_name}}@endif">
+                <input id="provider_id" name="provider_id" type="hidden" value="@if(isset($provider_id)){{$provider_id}}@endif">
                 <button type="submit" class="btn btn-danger col-md-offset-2" style="border-radius:5px;">Submit</button>
             </form>
 

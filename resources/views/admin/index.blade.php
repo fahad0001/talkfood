@@ -9,18 +9,28 @@
     <div class="col-md-12">
         <div class="box">
             <div class="box-header">
-              <h3 class="box-title">Restuarants</h3>
-              <div class=" pull-right">
-              
+              <h3 class="box-title">Restuarants</h3>                
+              <div class=" pull-right">              
                   <div class="col-sm-2 dropdown">
-        <button class="btn btn-primary dropdown-toggle" id="menu1" type="button" data-toggle="dropdown">Availability
-        <span class="caret"></span></button>
-        <ul id="menuavail" class="dropdown-menu" role="menu" aria-labelledby="menu1">
-            <li role="presentation"><a data-value="Online" role="menuitem" tabindex="-1" href="{{URL::to('admin/updateavailibility/Online')}}">Online</a></li>
-            <li role="presentation"><a data-value="Offline" role="menuitem" tabindex="-1" href="{{URL::to('admin/updateavailibility/Offline')}}">Offline</a></li>  
-        </ul>
-    </div>
+                    <button class="btn btn-primary dropdown-toggle" id="menu1" type="button" data-toggle="dropdown">Availability
+                    <span class="caret"></span></button>
+                    <ul id="menuavail" class="dropdown-menu" role="menu" aria-labelledby="menu1">
+                        <li role="presentation"><a data-value="Online" role="menuitem" tabindex="-1" href="{{URL::to('admin/updateavailibility/Online')}}">Online</a></li>
+                        <li role="presentation"><a data-value="Offline" role="menuitem" tabindex="-1" href="{{URL::to('admin/updateavailibility/Offline')}}">Offline</a></li>  
+                    </ul>
+                </div>
               </div>
+              <form action="{{URL::to('admin/search/restaurant')}}" role="form" method="GET" style="margin-top: -16px;">
+                <div class="box-tools pull-right" style="position:relative">
+                        <div class="input-group input-group-sm" style="width: 200px;">                            
+                            <input type="text" name="search" class="form-control pull-right" placeholder="Search">
+                            <div class="input-group-btn">
+                                <button type="submit" class="btn btn-default"><i class="fa fa-search"></i></button>                            
+                            </div>
+                            
+                        </div>
+                </div>
+              </form>
             </div>
             <!-- /.box-header -->
             <div class="box-body table-responsive no-padding">
