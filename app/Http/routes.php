@@ -118,7 +118,17 @@ Route::get('admin/viewallorderdetails/delete/{id}', 'dashboard@viewallOrderdelet
 // New Added Functions
 // Update Availibility Status of All Resturants
 Route::get('admin/updateavailibility/{status}','newdashboard@updateAvailibility');
-
+Route::get('admin/viewcategory','newdashboard@viewCategory');
+Route::get('admin/menu','newdashboard@index');
+Route::get('admin/viewcategory/{id}','newdashboard@viewCategory');
+Route::post('admin/addcategory/{id}','newdashboard@createCategory');
+Route::get('admin/deletecategory/{id}','newdashboard@deleteCategory');
+Route::get('admin/addmenuitem/{id}','newdashboard@MenuItem');
+Route::post('admin/addmenuitem','newdashboard@createMenuItem');
+Route::get('admin/viewmenuitem/{id}','newdashboard@viewMenuItem');
+Route::get('admin/deletemenuitem/{id}','newdashboard@deleteMenuItem');
+Route::get('admin/editmenuitem/{id}','newdashboard@editMenuItem');
+Route::post('admin/editmenuitem/{id}','newdashboard@doEditMenuItem');
 //search routes
 Route::get('admin/search', 'newdashboard@searchCustomer');
 Route::post('admin/search', 'newdashboard@doSearchCustomer');
