@@ -20,8 +20,7 @@ use DB;
 use App\Quotation;
 use App\Category;
 use App\SubMenu;
-
-
+use App\OrderInfo;
 use App\Http\Controllers\Controller;
 
 
@@ -206,6 +205,16 @@ class newdashboard extends Controller
 		$foodDetail = Food::with('foodCategory')->where('rest_id', $userData->rest_id)->orderBy('food_id','Desc')->paginate(15);
 		return view('admin.food.viewFood', compact('foodDetail'));
 	}
+    // update status of order
+    public function updateStatus(Request $request)
+    {
+        $orderDetails=OrderInfo::where('order_id',$request['orderId'])->first();
+        $orderDetails->order_status=$request['status'];
+        $orderDetails->save();
+        return $orderDetails->order_status;
+    }
+
+    
 
         public function deleteMenuItem($id) {
         //$user = Auth::user();
