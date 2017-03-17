@@ -10,26 +10,7 @@
         <div class="box">
             <div class="box-header">
               <h3 class="box-title">Customers</h3>
-              <form action="{{URL::to('admin/search/customer')}}" role="form" method="GET" style="margin-top: -16px;">
-                <div class="box-tools pull-right" style="position:relative">
-                        <div class="input-group input-group-sm" style="width: 200px;">                            
-                            <input type="text" name="search" class="form-control pull-right" placeholder="Search">
-                            <div class="input-group-btn">
-                                <button type="submit" class="btn btn-default"><i class="fa fa-search"></i></button>                            
-                            </div>                            
-                        </div>
-                </div>
-              
-              <div class="col-md-2 pull-right">
-                <select class="form-control" name="type">
-                    <option value="fname">First Name</option>
-                    <option value="lname">Last Name</option>
-                    <option value="email">Email</option>
-                </select>
             </div>
-            </form>
-            </div>
-
             <!-- /.box-header -->
             <div class="box-body table-responsive no-padding">
               <table class="table table-hover">

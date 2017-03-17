@@ -10,7 +10,7 @@
         <div class="box">
             <div class="box-header">
               <h3 class="box-title">Restuarants</h3>
-              <div class=" pull-right">
+              <!--<div class=" pull-right">
               
                   <div class="col-sm-2 dropdown">
         <button class="btn btn-primary dropdown-toggle" id="menu1" type="button" data-toggle="dropdown">Availability
@@ -20,7 +20,7 @@
             <li role="presentation"><a data-value="Offline" role="menuitem" tabindex="-1" href="{{URL::to('admin/updateavailibility/Offline')}}">Offline</a></li>  
         </ul>
     </div>
-              </div>
+              </div>-->
             </div>
             <!-- /.box-header -->
             <div class="box-body table-responsive no-padding">
@@ -31,10 +31,7 @@
                 <tr>
                   <th>ID</th>
                   <th>Restuarant Name</th>
-                  <th>Kitchen Type</th>
-                  <th>Date</th>
                   <th>Address</th>
-                  <th>Status</th>
                   <th></th>
                   <th></th>
                    <th></th>
@@ -44,16 +41,11 @@
                             <tr>
                             <td>{{$index+$start_num}}</td>
                             <td>{{$rest->rest_name}}</td>
-                            <td>{{$rest->kitchen_type}}</td>
-                            <td>{{$rest->created_at->format('m/d/Y')}}</td>
                             <td>{{$rest->rest_street}} {{$rest->rest_city}} {{$rest->rest_country}}</td>
-                            <td><span class="label label-success">{{$rest->rest_status}}</span></td>
                            
-                            <td><a href="{{URL::to('admin/vieworders')}}/{{$rest->rest_id}}">View Orders</a></td>
-                             <td><a href="{{URL::to('admin')}}/{{$rest->rest_id}}/salereport"> View sales</a></td>
-                           
-                            <td><a href="{{URL::to('admin/editrest')}}/{{$rest->rest_id}}"> Edit</a></td>
-                             <td><a href="{{URL::to('admin/deleterest')}}/{{$rest->rest_id}}"> Delete</a></td>
+                            <td><a href="{{URL::to('admin/viewcategory')}}/{{$rest->rest_id}}">Categories</a></td>
+                             <td><a href="{{URL::to('admin/addmenuitem')}}/{{$rest->rest_id}}">Add Menu Items</a></td>
+                            <td><a href="{{URL::to('admin/viewmenuitem')}}/{{$rest->rest_id}}">View Menu Items</a></td>
                             </tr>                         
                         @endforeach
                     

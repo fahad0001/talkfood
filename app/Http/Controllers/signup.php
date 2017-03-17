@@ -60,8 +60,6 @@ class signup extends Controller {
              //  return var_dump(Input::all());
                 $firstName = Input::get('firstname');
                 $lastName = Input::get('lastname');
-                $provider_name = Input::get('provider_name');
-                $provider_id = Input::get('provider_id');
 
                 $cusShipStreet = Input::get('cust_ship_street');
                 $cusShipCity = Input::get('cust_ship_city');
@@ -87,9 +85,6 @@ class signup extends Controller {
                             'email' => $emailNo,
                             'password' => bcrypt($password),
                               'role'=>$type,
-                              
-                            'provider'=>$provider_name,
-                            'provider_id'=>$provider_id,
                 ]);
                 
                
@@ -165,9 +160,6 @@ class signup extends Controller {
 
                 $firstName = Input::get('firstname');
                 $lastName = Input::get('lastname');
-                $provider_name = Input::get('provider_name');
-                $provider_id = Input::get('provider_id');
-
                 $restuarantName = Input::get('rest_name');
                 $kitchenType = Input::get('kitchen_type');
                 $street = Input::get('rest_street');
@@ -197,8 +189,6 @@ class signup extends Controller {
                             'email' => $emailNo,
                             'password' => bcrypt($password),
                             'role'=>'rest',
-                            'provider'=>$provider_name,
-                            'provider_id'=>$provider_id,
                 ]);
                 Restaurant::create([
                     

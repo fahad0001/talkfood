@@ -42,6 +42,7 @@
                     </span>
                 </a>
             </li>
+
             
              <li class="treeview">
                 <a href="{{URL::to('/admin/allorders')}}">
@@ -51,14 +52,17 @@
                     </span>
                 </a>
             </li>
-            <li class="treeview ">
-                <a href="{{URL::to('/admin/search')}}">
-                    <i class="fa fa-dashboard"></i> <span>Search</span>
-                    <span class="pull-right-container">
-                      <!--<i class="fa fa-angle-left pull-right"></i>-->
-                    </span>
-                </a>
-
-            </li>
            
+               <li class="treeview">
+        <a href="{{URL::to('admin/menu')}}">
+            <i class="fa fa-money"></i> <span>Menu</span>
+            <span class="pull-right-container">
+            </span>
+        </a>
+        <!--<ul class="treeview-menu">
+            <li class=""><a href="{{URL::to('admin/viewcategory')}}"><i class="fa fa-circle-o"></i> Add Categories</a></li>
+            <li><a href="{{URL::to('admin/addmenuitem')}}"><i class="fa fa-circle-o"></i> Add Menu Item</a></li>
+            <!-- <li><a href="{{URL::to('restaurant/viewmenuitem')}}"><i class="fa fa-circle-o"></i> View Menu Item</a></li>
+          </ul>-->
+    </li>
         </ul>
