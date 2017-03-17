@@ -443,206 +443,155 @@ Place Order<i class='fa fa-arrow-right'></i>
 @endsection @section('scripts')
 <script src="https://js.stripe.com/v3/"></script>
 <script>
-    $(document).ready(function() {
-        $("#checkoutform").hide();
-
-
-        $("#tipchange").click(function(e) {
-            e.preventDefault();
-
-            $("#myModal").modal('show');
-        });
-
-        $("#checkoutm").click(function(e) {
-            e.preventDefault();
+    $(document).ready(function () {
+         $("#checkoutform").hide();
+        
+        
+          $("#tipchange").click(function(e){
+              e.preventDefault();
+              
+              $("#myModal").modal('show');
+          });
+        
+        $("#checkoutm").click(function(e){
+               e.preventDefault();
             if ($("#delivery_tab").css('display') == "none") {
-
-                $('#checkout').modal('toggle');
-            } else {
+            
+           $('#checkout').modal('toggle');
+            }
+            else {
                 $('#ad').parsley().validate();
             }
         });
+        
+    
+            $('#ad').parsley();
+    $("#delivery_check").click(function () {
+    $("#delivery_tab").toggle();
+    if ($("#delivery_tab").css('display') == "none") {
 
-        @if(Session::has('cart'))
-        var ttip = 2.5;
-        $("#tt").text(({
-            {
-                $total
-            }
-        } + ttip).toFixed(2));
-        @endif
-
-        $('#ad').parsley();
-        $("#delivery_check").click(function() {
-            $("#delivery_tab").toggle();
-            if ($("#delivery_tab").css('display') == "none") {
-
-                $('#ad').parsley().destroy();
-            } else {
-                $('#ad').parsley();
-            }
-        });
-        @if(Session::has('cart'))
-        $("#option1").change(function() {
-            // Do something interesting here
-            var tip = 2.5;
-            $("#dtipv").text((tip).toFixed(2));
-            $("#dtip").text("(2.5 $CAD)");
-            $("#myModal").modal('hide');
-            $("#tt").text(({
-                {
-                    $total
-                }
-            } + tip).toFixed(2));
-        });
-        $("#option2").change(function() {
-            // Do something interesting here
-            var tip = (10 / 100) * {
-                {
-                    $subtotal
-                }
-            };
-            $("#dtipv").text((tip).toFixed(2));
-            $("#dtip").text("(10%)");
-            $("#myModal").modal('hide');
-            $("#tt").text(({
-                {
-                    $total
-                }
-            } + tip).toFixed(2));
-        });
-
-
-        $("#option3").change(function() {
-            // Do something interesting here
-            $("#codform").show();
-            $("#checkoutform").hide();
-        });
-        $("#option4").change(function() {
-            // Do something interesting here
-            $("#codform").hide();
-            $("#checkoutform").show();
-        });
+    $('#ad').parsley().destroy();
+    }
+    else {
+    $('#ad').parsley();
+    }
+    });
+    
 
 
 
+var stripe = Stripe('pk_live_TwD7bMEIBmwYykoxuUIOllC2');
+var elements = stripe.elements();
+
+var card = elements.create('card', {
+  iconStyle: 'solid',
+  style: {
+    base: {
+      iconColor: '#8898AA',
+      color: 'black',
+      lineHeight: '36px',
+      fontWeight: 300,
+      fontFamily: 'Helvetica Neue',
+      fontSize: '19px',
+
+      '::placeholder': {
+        color: '#8898AA',
+      },
+    },
+    invalid: {
+      iconColor: '#e85746',
+      color: '#e85746',
+    }
+  },
+  classes: {
+    focus: 'is-focused',
+    empty: 'is-empty',
+  },
+  hidePostalCode:true,
+});
+
+card.mount('#card-element');
+$("#checkoutform button").addClass("btn btn-primary");
+$("#checkoutform button").html("Pay($ "+$("#tt").text()+")");
+var inputs = Array.from(document.querySelectorAll('input.field'));
+inputs.forEach(function(input) {
+  input.addEventListener('focus', function() {
+    input.classList.add('is-focused');
+  });
+  input.addEventListener('blur', function() {
+    input.classList.remove('is-focused');
+  });
+  input.addEventListener('keyup', function() {
+    if (input.value.length === 0) {
+      input.classList.add('is-empty');
+    } else {
+      input.classList.remove('is-empty');
+    }
+  });
+});
+
+function setOutcome(result) {
+ // var successElement = document.querySelector('.success');
+  var errorElement = document.querySelector('.error');
+ // successElement.classList.remove('visible');
+  errorElement.classList.remove('visible');
+
+  if (result.token) {
+    // Use the token to create a charge or a customer
+    // https://stripe.com/docs/charges
+  //  successElement.querySelector('.token').textContent = result.token.id;
+    $("#checkoutform").append($('<input type="hidden" name="Stripetoken" />').val(result.token.id));
+   // alert("Asd");
+   // successElement.classList.add('visible');
+    $("#ad").submit();
+  } else if (result.error) {
+        $(".overlay").hide();
+    errorElement.textContent = result.error.message;
+    errorElement.classList.add('visible');
+  }
+}
+
+card.on('change', function(event) {
+  setOutcome(event);
+});
 
 
 
 
-        @endif
 
-
-
-
-        var stripe = Stripe('pk_live_TwD7bMEIBmwYykoxuUIOllC2');
-        var elements = stripe.elements();
-
-        var card = elements.create('card', {
-            iconStyle: 'solid',
-            style: {
-                base: {
-                    iconColor: '#8898AA',
-                    color: 'black',
-                    lineHeight: '36px',
-                    fontWeight: 300,
-                    fontFamily: 'Helvetica Neue',
-                    fontSize: '19px',
-
-                    '::placeholder': {
-                        color: '#8898AA',
-                    },
-                },
-                invalid: {
-                    iconColor: '#e85746',
-                    color: '#e85746',
-                }
-            },
-            classes: {
-                focus: 'is-focused',
-                empty: 'is-empty',
-            },
-            hidePostalCode: true,
-        });
-
-        card.mount('#card-element');
-        $("#checkoutform button").addClass("btn btn-primary");
-        $("#checkoutform button").html("Pay($ " + $("#tt").text() + ")");
-        var inputs = Array.from(document.querySelectorAll('input.field'));
-        inputs.forEach(function(input) {
-            input.addEventListener('focus', function() {
-                input.classList.add('is-focused');
-            });
-            input.addEventListener('blur', function() {
-                input.classList.remove('is-focused');
-            });
-            input.addEventListener('keyup', function() {
-                if (input.value.length === 0) {
-                    input.classList.add('is-empty');
-                } else {
-                    input.classList.remove('is-empty');
-                }
-            });
-        });
-
-        function setOutcome(result) {
-            // var successElement = document.querySelector('.success');
-            var errorElement = document.querySelector('.error');
-            // successElement.classList.remove('visible');
-            errorElement.classList.remove('visible');
-
-            if (result.token) {
-                // Use the token to create a charge or a customer
-                // https://stripe.com/docs/charges
-                //  successElement.querySelector('.token').textContent = result.token.id;
-                $("#checkoutform").append($('<input type="hidden" name="Stripetoken" />').val(result.token.id));
-                // alert("Asd");
-                // successElement.classList.add('visible');
-                $("#ad").submit();
-            } else if (result.error) {
-                $(".overlay").hide();
-                errorElement.textContent = result.error.message;
-                errorElement.classList.add('visible');
-            }
+$("#ad").on("submit", function(e){
+    
+    
+      if($('#option4').is(':checked')) {  
+    if($("#checkoutform").find('input[name=Stripetoken]').length) {
+    
+  //  alert("Asdasd");
+    
+  
+  }
+  
+  else {
+        //  alert("Test");
+          $(".overlay").show();
+  e.preventDefault();
+  //var form = $("#checkoutform");
+  var extraDetails = {
+    name: $('#cardhname').val(),
+  };
+  console.log(extraDetails);
+  stripe.createToken(card, extraDetails).then(setOutcome);
+      
         }
-
-        card.on('change', function(event) {
-            setOutcome(event);
-        });
-
-
-
-
-
-        $("#ad").on("submit", function(e) {
-
-
-            if ($('#option4').is(':checked')) {
-                if ($("#checkoutform").find('input[name=Stripetoken]').length) {
-
-                    //  alert("Asdasd");
-
-
-                } else {
-                    //  alert("Test");
-                    $(".overlay").show();
-                    e.preventDefault();
-                    //var form = $("#checkoutform");
-                    var extraDetails = {
-                        name: $('#cardhname').val(),
-                    };
-                    console.log(extraDetails);
-                    stripe.createToken(card, extraDetails).then(setOutcome);
-
-                }
-            } else if ($('#option3').is(':checked')) {
-                $(".overlay").show();
-            }
-        });
+    }
+    else if($('#option3').is(':checked')){
+         $(".overlay").show();
+    }
+});
 
 
 
 
     });
+
 </script>
 @endsection
