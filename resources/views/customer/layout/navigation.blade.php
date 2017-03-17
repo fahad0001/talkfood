@@ -32,56 +32,9 @@
                 @endif
                 @endif
 
-                <li class="dropdown">
-                    <a href="#" class="dropdown-toggle page-scroll" data-toggle="dropdown" style="background:none">Cart <span id="cartcount" class="badge">@if(isset($cart)) {{Session::get('cart')['totalquantity']}} @elseif(Session::has('cart')) {{Session::get('cart')['totalquantity']}}@else {{0}}  @endif</span>
+                <li>
+                    <a href="{{URL::to('/cart')}}" class="page-scroll">Cart <span id="cartcount" class="badge">@if(isset($cart)) {{Session::get('cart')['totalquantity']}} @elseif(Session::has('cart')) {{Session::get('cart')['totalquantity']}}@else {{0}}  @endif</span>
                     </a>
-                    <ul class="dropdown-menu dropdown-cart" role="menu" style="padding: 10px 15px;width:250px">
-                @if(isset($cart)) 
-                <!--{{Session::get('cart')['totalquantity']}} -->
-                @for ($i = 0; $i < (count(Session::get('cart'))-1); $i++)
-                <li>
-                  <span class="item">
-                    <span class="item-left">
-                        <span class="item-info">
-                            <span>{{Session::get('cart')[$i]['food_name']}}</span>
-                            <span class="pull-right"><b>{{Session::get('cart')[$i]['food_price']}}.$</b></span>
-                        </span>
-                    </span>
-                </span>
-              </li>
-              <li class="divider"></li>
-              @endfor
-                @elseif(Session::has('cart')) 
-                <!--{{Session::get('cart')['totalquantity']}}-->
-               @for ($i = 0; $i < (count(Session::get('cart'))-1); $i++)
-                <li>
-                  <span class="item">
-                    <span class="item-left">
-                        <span class="item-info">
-                            <span>{{Session::get('cart')[$i]['food_name']}}</span>
-                            <span class="pull-right"><b>{{Session::get('cart')[$i]['food_price']}}.$</b></span>
-                        </span>
-                    </span>
-                </span>
-              </li>
-              <li class="divider"></li>
-              @endfor
-                @else 
-                <!--{{0}}  -->
-                <li>
-                  <span class="item">
-                    <span class="item-left">
-                        <span class="item-info">
-                            <span><b>&nbsp No Items</b></span>
-                        </span>
-                    </span>
-                </span>
-              </li>
-              <li class="divider"></li>
-                @endif
-              
-              <li><a class="text-center" href="{{URL::to('/cart')}}">View Cart</a></li>
-          </ul>
                 </li>
             </ul>
         </div>
