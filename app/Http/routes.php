@@ -57,13 +57,31 @@ Route::get('/waleed', function () {
 });
 
 //signUp
-Route::get('signup','signup@signup');
+// Route::get('signup','signup@signup');
+Route::get('signup',function(){
+    return view('signup');
+});
+Route::get('signup/email','signup@signup');
 Route::get('logout','signup@signout');
 Route::post('signup/store','signup@doSignUp');
 
 //login
 Route::get('login','login@login');
 Route::post('login','login@dologin');
+
+//social
+Route::get('auth/facebook','SocialController@redirectToProvider');
+Route::get('auth/facebook/callback','SocialController@handleProviderCallback');
+
+Route::get('auth/google','SocialController@googleRedirectToProvider');
+Route::get('auth/google/callback','SocialController@googleHandleProviderCallback');
+
+Route::get('auth/linkedin','SocialController@linkedinRedirectToProvider');
+Route::get('auth/linkedin/callback','SocialController@linkedinHandleProviderCallback');
+
+Route::get('auth/twitter','SocialController@twitterRedirectToProvider');
+Route::get('auth/twitter/callback','SocialController@twitterHandleProviderCallback');
+
 
 Route::group(['middleware' => 'adminMiddleware'], function () {
 //admin
@@ -94,17 +112,22 @@ Route::post('admin/editPromotionSetting/{id}','promotions@changeSetting');
 Route::post('admin/addPromotion','promotions@addPromotion');
 Route::get('admin/deletePromotion/{id}','promotions@deletePromotion');
 
- Route::get('admin/allorders', 'dashboard@viewallorders');
-   Route::get('admin/viewallorderdetails/{id}', 'dashboard@viewallOrderDetails');
-    Route::get('admin/viewallorderdetails/delete/{id}', 'dashboard@viewallOrderdelete');
+Route::get('admin/allorders', 'dashboard@viewallorders');
+Route::get('admin/viewallorderdetails/{id}', 'dashboard@viewallOrderDetails');
+Route::get('admin/viewallorderdetails/delete/{id}', 'dashboard@viewallOrderdelete');
 // New Added Functions
 // Update Availibility Status of All Resturants
 Route::get('admin/updateavailibility/{status}','newdashboard@updateAvailibility');
+
+//search routes
+Route::get('admin/search', 'newdashboard@searchCustomer');
+Route::post('admin/search', 'newdashboard@doSearchCustomer');
+Route::get('admin/search/restaurant', 'newdashboard@doSearchRestuarant');
+Route::get('admin/search/customer', 'newdashboard@doSearchCustomer');
+Route::get('admin/search/orderinfo', 'newdashboard@doSearchOrderInfo');
 });
-Route::get('search/autocomplete', 'newdashboard@autocomplete');
-Route::get('search/', function(){
-    return view('admin.search');
-});
+
+
 
 Route::group(['middleware' => 'restMiddleware'], function () {
 //restaurant
