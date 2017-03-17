@@ -628,7 +628,15 @@ class customer extends Controller {
             $o->order_grand_total = round($grandtotal, 2);
             $o->order_print_status = 0; //zero means no print status
 
-
+            //additonal information textarea 
+             if (Input::has('type')) {
+                 dd(Input::get("additionalText"));
+                $o->order_infocol = Input::get("additionalText");
+                $o->save();
+            } else {
+                $o->order_infocol = Input::get("additionalText");
+                $o->save();
+            }
 
 
 
