@@ -33,8 +33,8 @@ Restaurant Dashboard
                                 <td>{{$food['food_desc']}}</td>
                                 <td>{{$food['food_price']}}</td>
                                 
-                                <td><a href="{{URL::to('restaurant/editmenuitem/'.$food['food_id'])}}">Edit</a></td> 
-                                <td><a href="{{URL::to('restaurant/deletemenuitem/'.$food['food_id'])}}">Delete</a></td> 
+                                <td><a href="{{URL::to('admin/editmenuitem/'.$food['food_id'])}}">Edit</a></td> 
+                                <td><a href="{{URL::to('admin/deletemenuitem/'.$food['food_id'])}}">Delete</a>{{$food['food_id']}}</td> 
                             </tr>
                             @endforeach
                         </tbody>
@@ -72,7 +72,7 @@ Restaurant Dashboard
                                 <td >{{$sub['name']}}</td>                             
                                 <td>{{$sub['desc']}}</td>
                                 <td>{{$sub['price']}}</td>                                
-                                <td><a href="{{URL::to('restaurant/viewsubitem/'.$sub['id'])}}">Edit</a></td> 
+                                <td><a href="{{URL::to('admin/viewsubitem/'.$sub['id'])}}">Edit</a></td> 
                             </tr>
                             @endforeach
                     </tbody>

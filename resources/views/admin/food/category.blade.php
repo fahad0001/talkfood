@@ -8,16 +8,16 @@ Food Category
 
 @section('content')
 <div class="row">
- <form class="navbar-form" action="{{URL::to('admin/viewcategory')}}" role="search">
+ <!--<form class="navbar-form" action="{{URL::to('admin/viewcategory')}}" role="search">
     <div class=" col-md-2 pull-right">
       <input class="form-control" placeholder="Search" name="search" id="countries" type="text">
     </div>
-  </form>
+  </form>-->
   @if(isset($catDetail))
 <div class="col-md-8 col-md-offset-1">
    <!--<input type="hidden" id="page_name" value="adddishtype">-->
    
-    <form class="form-horizontal" action="{{URL::to('admin/addcategory')}}/{{$restId}}" role="form" action="" method="POST">
+    <form class="form-horizontal" action="{{URL::to('admin/addcategory')}}/{{$catDetail[0]->rest_id}}" role="form" action="" method="POST">
         {{ Csrf_field() }}
         <div class="form-group">
             <label for="DishType" class="col-sm-2 control-label">Add Category:</label>

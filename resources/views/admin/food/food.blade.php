@@ -11,7 +11,7 @@ Restaurant Dashboard
             <div class="box-header with-border">
                 <h3 class="box-title">Add Menu Item</h3>
             </div>
-            <form class="form-horizontal" role="form" action="{{URL::to('restaurant/addmenuitem')}}" method="POST">
+            <form class="form-horizontal" role="form" action="{{URL::to('admin/addmenuitem')}}" method="POST">
                 {{Csrf_field()}}
                 <div class="box-body">
                     <div class="form-group">

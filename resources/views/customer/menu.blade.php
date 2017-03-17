@@ -195,6 +195,9 @@ $(document).ready(function(){
          var cartcount=$('#cartcount').text();
           var count=parseInt(cartcount)+1;
              $('#cartcount').html(count);
+            //  for (i = 0; i < count; i++) { 
+            //         text += cars[i] + "<br>";
+            // }
              }
              $(".overlay").hide();
          

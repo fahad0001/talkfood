@@ -12,7 +12,7 @@ Restaurant Dashboard
                 <h3 class="box-title">Edit Food</h3>
             </div>
 
-            <form class="form-horizontal" role="form" action="{{URL::to('restaurant/editmenuitem')}}/{{$food->food_id}}" method="POST">
+            <form class="form-horizontal" role="form" action="{{URL::to('admin/editmenuitem')}}/{{$food->food_id}}" method="POST">
                 {{Csrf_field()}}
 
 
