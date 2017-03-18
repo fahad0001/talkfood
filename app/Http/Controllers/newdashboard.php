@@ -247,6 +247,7 @@ class newdashboard extends Controller
 		$foodDetail = Food::with('foodCategory')->where('rest_id', $userData->rest_id)->orderBy('food_id','Desc')->paginate(15);
 		return view('admin.food.viewFood', compact('foodDetail'));
 	}
+    
     // update status of order
     public function updateStatus(Request $request)
     {

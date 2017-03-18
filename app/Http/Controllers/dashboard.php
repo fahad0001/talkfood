@@ -286,6 +286,7 @@ class dashboard extends Controller
         
         $customeraddress = CustomerAddress::where('cus_id', $orderinfo['customer']->id)->get();
         $orderinfo['customerAddress'] = $customeraddress[0];
+        $restName=Restaurant::where('rest_id',$orderinfo->rest_id)->first()->rest_name;
 //        $items = $data[1];
 //        foreach ($items as $key => $value) {
 //
@@ -318,7 +319,7 @@ if($orderstatus->order_status=="pending") {
 }
        
         // return var_dump($items->toArray());
-        return view('admin.viewallorderdetails', compact('orderinfo', 'cart', 'total','orderstatus'));
+        return view('admin.viewallorderdetails', compact('orderinfo', 'cart', 'total','orderstatus','restName'));
     }
     
      public function viewallOrderdelete($id) {

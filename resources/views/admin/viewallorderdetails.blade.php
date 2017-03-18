@@ -5,22 +5,31 @@ Restaurant Dashboard
 
 
 @section('content')
+<meta name="csrf-token" content="{{ csrf_token() }}">
 <div class="row">
     <div class="col-sm-12">
         <div class="box">
             <div class="box-header">
                 <h3>
-                    Resturant Order
+                    <b>{{$restName}}</b>'s Order
                 </h3>
             </div>
+            <div class="container">
+            <label for="sel1" >Status :</label>
+            <select id="status" name="status" class="selectContainer">
+                         <option {{$orderstatus->order_status ==''? 'selected':''}} value=""></option>
+                         <option {{$orderstatus->order_status =='complete'? 'selected':''}} value="complete">Complete</option>
+                         <option {{$orderstatus->order_status =='pending'? 'selected':''}} value="pending">Pending</option>
+                         <option {{$orderstatus->order_status =='canceled'? 'selected':''}} value="canceled">Canceled</option>
+                         <option {{$orderstatus->order_status =='processing'? 'selected':''}} value="processing">Processing</option>
+                         </select>
+            </div>
             <div class="box-body table-responsive no-padding">
-
-
-                    <div class='row'>
+            <div class='row'>
             <div class='col-sm-12' style='background-color: white; padding-top:10px;padding-bottom:10px;min-height:500px;'>
                 <div class="col-sm-6">
                      <h1>Orders Details</h1>
-                     <h3><b>Order Status : {{$orderstatus->order_status}}</b></h3>
+                     <h3 id="refStatus"><b>Order Status : {{$orderstatus->order_status}}</b></h3>
                     <h3><b>Order Id : {{$orderinfo->order_id}}</b></h3>
                     <h4>Order quantity : {{$orderinfo->order_qty}}</h4>
                      <h4>Order Subtotal : {{$orderinfo->order_total_without_tax}} CAD</h4>
@@ -99,18 +108,35 @@ Restaurant Dashboard
      <a href="{{URL::to('admin/allorders')}}" class="btn btn-danger"> Back to Orders</a>
             </div>
             </div>
-           
-
-
-
-
-
-
-
         </div>
                 
             </div>
         </div>
         
     </div></div>
+@endsection
+
+@section('scripts')
+    <script>
+    $(document).ready(function(){
+        $("#status").change(function(){
+            var textLi=$(this).val();
+            var URLA='';
+             URLA="{{URL::to('admin/updatestatus')}}";
+             $.ajax({
+                 headers: 
+                 {
+                    'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                 },
+                 type:"POST",
+                 data:{status:textLi,orderId:{{"$orderinfo->order_id"}}},
+                 url:URLA,
+                 success: function(datar)
+                 {
+                     $('#refStatus').html('<b>Order Status :'+datar+'</b>');
+                 }
+             });
+        });
+    });
+    </script>
 @endsection

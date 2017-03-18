@@ -226,6 +226,7 @@ Route::get('admin/viewallorderdetails/delete/{id}', 'dashboard@viewallOrderdelet
 
 // New Added Functions
 // Update Availibility Status of All Resturants
+Route::post('admin/updatestatus','newdashboard@updateStatus');
 Route::get('admin/updateavailibility/{status}','newdashboard@updateAvailibility');
 Route::get('admin/viewcategory','newdashboard@viewCategory');
 Route::get('admin/menu','newdashboard@index');
