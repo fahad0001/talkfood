@@ -1,3 +1,4 @@
+
 @extends('layout.master')
 @section('title')
 Restaurant Dashboard
@@ -34,7 +35,7 @@ Restaurant Dashboard
                                 <td>{{$food['food_price']}}</td>
                                 
                                 <td><a href="{{URL::to('admin/editmenuitem/'.$food['food_id'])}}">Edit</a></td> 
-                                <td><a href="{{URL::to('admin/deletemenuitem/'.$food['food_id'])}}">Delete</a>{{$food['food_id']}}</td> 
+                                <td><a href="{{URL::to('admin/deletemenuitem/'.$food['food_id'])}}">Delete</a></td> 
                             </tr>
                             @endforeach
                         </tbody>

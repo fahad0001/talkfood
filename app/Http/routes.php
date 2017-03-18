@@ -11,6 +11,104 @@
 |
 */
 
+use App\OrderInfo;
+use App\Restaurant;
+
+Route::get('gz',function(){
+
+
+
+$orderinfo=OrderInfo::where('order_id',73)->first();
+	
+			$items = array();
+                  $cartn = unserialize($orderinfo->cart);
+               return $cartn["promo_code"];
+              foreach ($cartn as $item) {
+                    if (!is_array($item)) {
+                        
+                    }else {
+
+                        if ($item['submenu_status'] == 1) {
+                            $iname=$item['food_name'];
+                            $iprice=floatval($item['food_price']);
+                            
+                            $subp=0;
+                            foreach ($item['subitem'] as $s) {
+                                $iname=$iname."(".$s['option'].":".$s['name'].")";
+                                 $subp=$subp+floatval($s['price']);
+                            }
+                           
+                           
+                          
+                             $iprice=$iprice+$subp;
+                             
+                              $i = array(
+                              	
+                                "sku" => $item['food_id'],
+                                "quantity" => $item['quantity'],
+                                "description"=>$iname,
+                                
+                                "price" =>$iprice
+                            );
+                            array_push($items, $i);
+                        } else {
+
+                            $i = array(
+                                "description" => $item['food_name'],
+                                "quantity" => $item['quantity'],
+                                "sku" => $item['food_id'],
+                                
+                                "price" =>$item['food_price']
+                            );
+                            array_push($items, $i);
+                        }
+                    }
+                }
+                $o=$orderinfo;
+                
+$des="Order id: ".$o->order_id.",Grand Total : ". $o->order_grand_total.",Created at :".$o->created_at.",";
+
+
+                    
+$gsrest=  Restaurant::where('rest_id',9)->first();
+                $client = new GuzzleHttp\Client();
+                $res = $client->request('POST', 'https://app.getswift.co/api/v2/deliveries', [
+                    'json' => [
+                        'apiKey' => "782f3d88-160d-4170-9c0b-c929abe25cc6",
+                        'booking' =>
+                        [	'items'=>$items,
+                            'pickupDetail' =>
+                            [
+                                'name' => "test",
+                                'phone' => "asd",
+                               "description" =>$des,
+                                'address' =>"121 carman avenue, federation, New Brunswick,canada"
+                            ],
+                            'dropoffDetail' =>
+                            [
+                                'name' => $gsrest->rest_name,
+                                'phone' => $gsrest->rest_phone_no,
+                                  "description" =>$des,
+                                'address' => $gsrest->rest_street.','.$gsrest->rest_city.','.$gsrest->rest_state_province.','.$gsrest->rest_country
+                            ],
+                            "webhooks" => [array(
+                            "eventName" => "job/accepted",
+                            "url" => "http://www.test.talkfood.ca/api/dispatch/".$o->order_id
+                                )]
+                        ]
+                    ]
+                ]);
+
+
+
+
+
+    echo $res->getBody();
+
+    return 1;
+    
+});
+
 Route::get('/google',function(Illuminate\Support\Facades\Request $r){
 //	$r=app('geocoder')->using('chain')->geocode('Block D-4 , Flat 6,Islamabad,44000,Pakistan')->all();
 //	var_dump($r[0]->getCoordinates()->getLongitude());
@@ -18,6 +116,9 @@ Route::get('/google',function(Illuminate\Support\Facades\Request $r){
     return var_dump($r->toArray());
     
 });
+
+
+
 
 Route::get('/sheep',function() {
 
@@ -82,6 +183,11 @@ Route::get('auth/linkedin/callback','SocialController@linkedinHandleProviderCall
 Route::get('auth/twitter','SocialController@twitterRedirectToProvider');
 Route::get('auth/twitter/callback','SocialController@twitterHandleProviderCallback');
 
+//reset password
+Route::get('forgotPassword','users@forgotPassword');
+Route::post('forgotPassword','users@doForgotPassword');
+Route::get('resetPassword/{token}','users@resetForgotPassword');
+Route::post('resetPassword/{token}','users@doResetForgotPassword');
 
 Route::group(['middleware' => 'adminMiddleware'], function () {
 //admin
@@ -111,10 +217,13 @@ Route::get('admin/editPromotionSetting/{id}','promotions@editSetting');
 Route::post('admin/editPromotionSetting/{id}','promotions@changeSetting');
 Route::post('admin/addPromotion','promotions@addPromotion');
 Route::get('admin/deletePromotion/{id}','promotions@deletePromotion');
+Route::get('admin/resetPassword/{id}','users@resetPassword');
+Route::post('admin/resetPassword/{id}','users@doResetPassword');
 
 Route::get('admin/allorders', 'dashboard@viewallorders');
 Route::get('admin/viewallorderdetails/{id}', 'dashboard@viewallOrderDetails');
 Route::get('admin/viewallorderdetails/delete/{id}', 'dashboard@viewallOrderdelete');
+
 // New Added Functions
 // Update Availibility Status of All Resturants
 Route::get('admin/updateavailibility/{status}','newdashboard@updateAvailibility');
@@ -135,9 +244,8 @@ Route::post('admin/search', 'newdashboard@doSearchCustomer');
 Route::get('admin/search/restaurant', 'newdashboard@doSearchRestuarant');
 Route::get('admin/search/customer', 'newdashboard@doSearchCustomer');
 Route::get('admin/search/orderinfo', 'newdashboard@doSearchOrderInfo');
+
 });
-
-
 
 Route::group(['middleware' => 'restMiddleware'], function () {
 //restaurant
@@ -181,9 +289,6 @@ Route::get('restaurant/viewsalereport','restdashboard@ViewSaleReport');
 // Update Availibility
 Route::get('restaurant/updateavailibility','restdashboard@updateAvailibility');
 });
-
-
-
 
 Route::group(['middleware' => 'custMiddleware'], function () {
 //customer

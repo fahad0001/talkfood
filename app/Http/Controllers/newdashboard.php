@@ -82,6 +82,11 @@ class newdashboard extends Controller
                                 ->paginate(15);            
             return view('admin.index',compact('rests'));
         }
+        else
+        {
+           $rests=Restaurant::paginate(15);  
+           return view('admin.index',compact('rests'));
+        }
     }
 
     public function doSearchCustomer(){
@@ -108,8 +113,21 @@ class newdashboard extends Controller
     }
     public function doSearchOrderInfo(){
         $value=Input::get('search');
+        if(is_numeric($value))
+        {
         $orderdetail=OrderInfo::where('order_id',$value)->with('customer')->orderBy('order_id','Desc')->paginate(15);
         return view('admin.allorders', compact('orderdetail'));
+        }
+        else{
+            if($value!=null){
+                $orderdetail=OrderInfo::with('customer')->join('users', 'users.id', '=', 'order_info.cust_id')->Where('users.first_name','LIKE',"%".$value."%")->orderBy('order_id','Desc')->paginate(15);
+                return view('admin.allorders', compact('orderdetail'));
+            }
+            else{
+                $orderdetail=OrderInfo::with('customer')->orderBy('order_id','Desc')->paginate(15);
+                return view('admin.allorders', compact('orderdetail'));
+            }
+        }
     }
 	//C	reate Category
 	public function createCategory($id) {
@@ -271,6 +289,7 @@ class newdashboard extends Controller
         // $user = Auth::user();
         // $rest = Restaurant::where('rest_user_id', $user->id)->first();
         $food = Food::where('food_id', $id)->first();
+        $restId=$food->rest_id;
        if(!Input::has('option')) {
             Food::where('food_id',$id)->update([
                 'food_name' => Input::get('food'),
@@ -309,27 +328,11 @@ class newdashboard extends Controller
                     'price' => $e['price'],
                     'option' => $s['name'],
                     'type'=>$s['type'],
-                    'food_id' =>$id
-                ]);
-//                        
-                    }
-              
+                    'food_id' =>$id]);
+                 } 
             }
-             
-           
         }
-
-
-
-        return redirect("/admin/viewmenuitem/$food->rest_id");
-        
-//        $food = Food::where('food_id', $id)->first();
-//        $food->food_name = Input::get('food');
-//        $food->food_desc = Input::get('description');
-//        $food->food_price = Input::get('price');
-//        $food->cate_id = Input::get('categ_id');
-//        $food->save();
-//        return redirect('/restaurant/viewmenuitem');
+        return redirect("/admin/viewmenuitem/$restId");
     }
 	
 	public function autocomplete()

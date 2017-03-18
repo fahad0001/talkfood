@@ -29,8 +29,6 @@ class dashboard extends Controller
         $rests=Restaurant::paginate(15);
         return view('admin.index',compact('rests'));
     }
-
-   
     
     public function viewcustomer()
     {
@@ -243,12 +241,37 @@ class dashboard extends Controller
     
       public function viewallorders() {
         
-        if(Input::has('filter')) {
-            
+        if(Input::has('search')) {
+        
+        if(Input::get('search')=="all") {
+        $orderdetail=OrderInfo::with('customer')->orderBy('order_id','Desc')->paginate(15);
+        
+        }
+        
+        elseif(Input::get('search')=="pending") {
+         $orderdetail=OrderInfo::with('customer')->where('order_status','pending')->orderBy('order_id','Desc')->paginate(15);
+    
+           } 
+           
+          elseif(Input::get('search')=="processing") {
+        
+      $orderdetail=OrderInfo::with('customer')->where('order_status','processing')->orderBy('order_id','Desc')->paginate(15);
+           } 
+           
+            elseif(Input::get('search')=="complete") {
+          $orderdetail=OrderInfo::with('customer')->where('order_status','complete')->orderBy('order_id','Desc')->paginate(15);
+    
+           } 
+           
+            elseif(Input::get('search')=="canceled") {
+          $orderdetail=OrderInfo::with('customer')->where('order_status','canceled')->orderBy('order_id','Desc')->paginate(15);
+    
+           } 
         }
         
         else {
             $orderdetail=OrderInfo::with('customer')->orderBy('order_id','Desc')->paginate(15);
+            //  dd(count($orderdetail));
         }
           
         
@@ -288,8 +311,12 @@ class dashboard extends Controller
         $shipping = $shipping + $shippingtax;
         $total = $subtotal + $tax + $shipping;
 
-        $orderstatus->order_status="processing";
-        $orderstatus->save();
+if($orderstatus->order_status=="pending") {
+
+ $orderstatus->order_status="processing";
+ $orderstatus->save();
+}
+       
         // return var_dump($items->toArray());
         return view('admin.viewallorderdetails', compact('orderinfo', 'cart', 'total','orderstatus'));
     }

@@ -12,22 +12,33 @@
                 @endforeach
             </div>
             @endif
+            @if (Session::get('status'))
+            <div class="alert alert-danger">
+                {{Session::get('status')}}
+            </div>
+            @endif
+            @if (Session::get('success'))
+            <div class="alert alert-success">
+                {{Session::get('success')}}
+            </div>
+            @endif
         <form class="form-horizontal" method="post" action="{{URL::to('login')}}">
             {{Csrf_field()}}
             <div class="form-group">
                       <label class="control-label col-sm-2" for="email">Email:</label>
                       <div class="col-sm-10">
-                        <input type="text" class="form-control" name="email" placeholder=" Email">
+                        <input type="text" class="form-control" required name="email" placeholder=" Email">
                       </div>
                     </div>
                     <div class="form-group">
                         <label class="control-label col-sm-2" for="password"> Password:</label>
                       <div class="col-sm-10">
-                        <input type="password" class="form-control" name="password" placeholder=" Password">
+                        <input type="password" class="form-control" required name="password" placeholder=" Password">
                       </div>
                     </div>
                    
                     <button type="submit" class="btn btn-danger col-md-offset-2" style="border-radius:5px;">Submit</button>
+                    <a href="{{URL::to('forgotPassword')}}" class="col-md-offset-1 Forgt" style="">Forgot Password ?</a>
         </form>
         <div class="social-auth-links text-center">
             <p>- OR -</p>
@@ -45,10 +56,7 @@
         </section>
 </header>
 @include('customer.layout.navigation')
-
 @endsection
-
-
 @section('style')
 <style>
 .registration-form{
@@ -97,6 +105,15 @@ color:white;
     background-color:white;
     color:#grey;
 }
+.Forgt{
+border-radius:5px;
+color:white;
+font-size:16px;
+font-weight:bold;
+}
 </style>
 @endsection
+
+
+
 

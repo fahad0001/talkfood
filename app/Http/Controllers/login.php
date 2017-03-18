@@ -37,7 +37,7 @@ class login extends Controller
         }
        
     }
-    public function dologin() {
+    public function dologin(Request $request) {
         $rules = array(
                 'email' => 'required|email|max:255',
                 'password' => 'required|min:6|', 
@@ -61,6 +61,7 @@ class login extends Controller
            
         }
         else {
+            $request->session()->flash('status', 'Invalid Login!');
              return Redirect::to('login'); 
         }
         }

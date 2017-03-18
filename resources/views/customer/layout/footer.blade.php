@@ -1,6 +1,6 @@
  <footer>
         <div class="container">
-            <p>&copy; 2016 TalkFood. All Rights Reserved.</p>
+            <p>&copy; <?php echo date('Y'); ?> TalkFood. All Rights Reserved.</p>
             <ul class="list-inline">
                 <li>
                     <a href="https://www.talkfood.org/privacy-policy">Privacy</a>

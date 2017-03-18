@@ -22,6 +22,9 @@ Restaurant Dashboard
                     <h4>First Name  : {{$custdetail->first_name}}</h4>
                      <h4>Last Name : {{$custdetail->last_name}}</h4>
                   <h4>Email : {{$custdetail->email}}</h4>
+                    @if(!empty($files = glob('uploads/' .$custdetail->id . '.*')))
+                        <img src="{{URL::to($files[0])}}" style="max-width:500px;"  />
+                    @endif
                   
                 </div>
                 @foreach($custAddress as $i)
@@ -56,6 +59,8 @@ Restaurant Dashboard
                 @endif
          @endforeach
      <a href="{{URL::to('admin/viewcustomer')}}" class="btn btn-danger"> Back to Customer</a>
+     <a href="{{URL::to('admin/resetPassword')}}/{{$custdetail->id}}" class="btn btn-danger"> Reset Password</a>
+     
             <h2>Promotions Given</h2>
             <div class="box-body table-responsive no-padding">
               <table class="table table-hover">
@@ -64,6 +69,7 @@ Restaurant Dashboard
                 
                 <tr>
                   <th>Promotion</th>
+                  <th>Code</th>
                   <th>Created</th>
                   <th>Expired</th>
                   <th>Used</th>
@@ -73,6 +79,7 @@ Restaurant Dashboard
                         @foreach($promotions as $promo)
                             <tr>
                             <td>{{$promotionSettings[$promo->promotion_setting_id]}}</td>
+                            <td>{{$promo->code}}</td>
                             <td>{{$promo->created_at->format('m/d/Y')}}</td>
                             <td>{{date('m/d/Y', strtotime($promo->created_at . '+' . $promotionSettingsExpiry[$promo->promotion_setting_id] . 'days'))}}</td>
                             <td>{{$promo->used}}</td>

@@ -35,12 +35,6 @@ scratch. This page gets rid of all links and provides the needed markup only.
   <!-- jQuery 2.2.3 -->
 <!--<script src="{{URL::asset('/bower_components/AdminLTE/plugins/jQuery/jquery-2.2.3.min.js')}}"></script>-->
 
- 
-
-    <!-- CSS file -->
-    <link rel="stylesheet" href="{{URL::asset('/EasyAutocomplete-1.3.5/easy-autocomplete.min.css')}}"> 
-       
-    
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.2.4/jquery.min.js" type="text/javascript"></script>
  
   <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.4.0/jquery.min.js" type="text/javascript"></script>
@@ -49,11 +43,13 @@ scratch. This page gets rid of all links and provides the needed markup only.
     <script>
       $(document).ready(function(){
        console.log($().jquery); // This prints v1.4.2
-       console.log($j().jquery); // This prints v1.9.1    
-             });
+       console.log($j().jquery); // This prints v1.9.1
+       
+       
+       
+       
+      });
    </script>
-    <!-- JS file -->
-    <script src="{{URL::asset('/EasyAutocomplete-1.3.5/jquery.easy-autocomplete.js')}}"></script>
 
 
   

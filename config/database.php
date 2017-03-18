@@ -54,11 +54,10 @@ return [
 
         'mysql' => [
             'driver' => 'mysql',
-            'host' => 'qasim.chnrhqillmoo.us-west-2.rds.amazonaws.com',
-            'port' =>'3306',
+            'host' => 'localhost',
             'database' => 'talkfood',
-            'username' =>'qasimali0001',
-            'password' => 'harry1234',
+            'username' =>'root',
+            'password' => '',
             'charset' => 'utf8',
             'collation' => 'utf8_unicode_ci',
             'prefix' => '',

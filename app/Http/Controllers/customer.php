@@ -25,6 +25,8 @@ use Stripe\Stripe;
 use Stripe\Charge;
 use App\Promotion;
 use App\PromotionSetting;
+use GuzzleHttp;
+use Storage;
 
 class customer extends Controller {
 
@@ -303,7 +305,7 @@ class customer extends Controller {
 
     function validatePromoCode($promoCode) {
         $usePromoCode = false;
-        if($promoCode != '') {
+        if($promoCode != '' && Auth::user()) {
             $promotion = Promotion::where([
                 ['user_id', '=', (int)Auth::user()->id],
                 ['code', '=', $promoCode]
@@ -359,8 +361,10 @@ class customer extends Controller {
         $cart['totalquantity'] = $totalquantity;var_dump($cart);
         if($this->validatePromoCode(Input::get('promo_code'))) {
             $cart['promo_code'] = Input::get('promo_code');
+           
         } else {
             $cart['promo_code'] = '';
+           
         }
         Session::put('cart', $cart);
 
@@ -477,8 +481,15 @@ class customer extends Controller {
                 $drivertip = round(floatval(15 / 100) * floatval($total), 2);
                 $o->drivertip = $drivertip;
             }
-
-            $usePromoCode = $this->validatePromoCode($cart['promo_code']);
+		if (array_key_exists('promo_code', $cart)) {
+		$usePromoCode = $this->validatePromoCode($cart['promo_code']);
+		
+		}
+		else {
+		$usePromoCode = $this->validatePromoCode("");
+		
+		}
+            
             //save shipping address to the order info table
             $s = Shipping::first();
             $tax = (floatval($s->tax) / 100) * $total;
@@ -495,18 +506,28 @@ class customer extends Controller {
             $o->order_grand_total = round($grandtotal, 2);
             $o->order_print_status = 0; //zero means no print status
 
-
-
-
-
-
-
-            if (Input::has('addresstype')) {
-
-                $o->addresstype = "ship";
+            //additonal information textarea 
+             if (Input::has('type')) {
+                $o->order_infocol = Input::get("additionalText");
                 $o->save();
             } else {
+                $o->order_infocol = Input::get("additionalText");
+                $o->save();
+            }
 
+
+
+
+  
+
+            if (Input::has('addresstype')) {
+	$gsca = CustomerAddress::where('cus_id', Auth::user()->id)->where('address_type', 'ship')->first();
+                $o->addresstype = "ship";
+                $o->save();
+                  $gsad = $gsca->street . ',' . $gsca->city . ',' . $gsca->country;
+            } else {
+
+	$gsca = CustomerAddress::where('cus_id', Auth::user()->id)->where('address_type', 'del')->first();
 
                 $cusShipStreet = Input::get('street');
                 $cusShipCity = Input::get('city');
@@ -514,6 +535,7 @@ class customer extends Controller {
                 $cusShipCountry = Input::get('country');
                 $cusShipZipCode = Input::get('zip');
                 $cusShipPhoneNo = Input::get('phone');
+$gsad = $cusShipStreet . ',' . $cusShipCity . ',' . $cusShipCountry;
 
 
                 $cs = CustomerAddress::where('cus_id', Auth::user()->id)->where('address_type', 'del')->update([
@@ -545,7 +567,93 @@ class customer extends Controller {
             }
 
 
-            
+               $items = array();
+             //   array_push($stack, array("test" => "test"), array("raspberry" => "sad"));
+                // return json_encode($stack);
+                $cartn = unserialize($o->cart);
+                
+                      // $cartn = unserialize($orderinfo->cart);
+               // return $cartn;
+              foreach ($cartn as $item) {
+                    if (!is_array($item)) {
+                        
+                    }else {
+
+                        if ($item['submenu_status'] == 1) {
+                            $iname=$item['food_name'];
+                            $iprice=floatval($item['food_price']);
+                            
+                            $subp=0;
+                            foreach ($item['subitem'] as $s) {
+                                $iname=$iname."(".$s['option'].":".$s['name'].")";
+                                 $subp=$subp+floatval($s['price']);
+                            }
+                           
+                           
+                          
+                             $iprice=$iprice+$subp;
+                             
+                              $i = array(
+                              	
+                                "sku" => $item['food_id'],
+                                "quantity" => $item['quantity'],
+                                "description"=>$iname,
+                                
+                                "price" =>$iprice
+                            );
+                            array_push($items, $i);
+                        } else {
+
+                            $i = array(
+                                "description" => $item['food_name'],
+                                "quantity" => $item['quantity'],
+                                "sku" => $item['food_id'],
+                                
+                                "price" =>$item['food_price']
+                            );
+                            array_push($items, $i);
+                        }
+                    }
+                }
+                
+                
+                
+                $des = "Grand Total : $" . $o->order_grand_total . ", time & date :" . $o->created_at ;
+
+
+
+                $gsrest = Restaurant::where('rest_id', $restid)->first();
+                           $client = new GuzzleHttp\Client();
+                $res = $client->request('POST', 'https://app.getswift.co/api/v2/deliveries', [
+                    'json' => [
+                        'apiKey' => "782f3d88-160d-4170-9c0b-c929abe25cc6",
+                        'booking' =>
+                        ['reference'=> "#".$o->order_id,
+                         'deliveryInstructions'=> $des,	
+                        'items'=>$items,
+                            'pickupDetail' =>
+                            [
+                            'name' => $gsrest->rest_name,
+                                'phone' => $gsrest->rest_phone_no,
+                                
+                                'address' => $gsrest->rest_street.','.$gsrest->rest_city.','.$gsrest->rest_state_province.','.$gsrest->rest_country
+                              
+                            ],
+                            'dropoffDetail' =>
+                            [
+                                'name' => Auth::user()->first_name." ".Auth::user()->last_name,
+                                'phone' => $gsca->phone_no,
+                              
+                                'address' =>$gsad
+                            ],
+                            "webhooks" => [array(
+                            "eventName" => "job/accepted",
+                            "url" => "http://www.test.talkfood.ca/api/dispatch/".$o->order_id
+                                )]
+                        ]
+                    ]
+                ]);
+
 
             Session::forget('cart');
             return redirect('customer/orders')->with('message', 'You order is placed!');
@@ -611,7 +719,13 @@ class customer extends Controller {
                 $o->drivertip = $drivertip;
             }
 
-            $usePromoCode = $this->validatePromoCode($cart['promo_code']);
+          if (array_key_exists('promo_code', $cart)) {
+		$usePromoCode = $this->validatePromoCode($cart['promo_code']);
+		
+		}
+		else {
+		$usePromoCode = $this->validatePromoCode("");
+		}
             //save shipping address to the order info table
             $s = Shipping::first();
             $tax = (floatval($s->tax) / 100) * $total;
@@ -630,24 +744,34 @@ class customer extends Controller {
 
 
 
+            //additonal information textarea 
+             if (Input::has('type')) {
+                $o->order_infocol = Input::get("additionalText");
+                $o->save();
+            } else {
+                $o->order_infocol = Input::get("additionalText");
+                $o->save();
+            }
 
-
-
+ 
 
             if (Input::has('addresstype')) {
+ $gsca = CustomerAddress::where('cus_id', Auth::user()->id)->where('address_type', 'ship')->first();
 
                 $o->addresstype = "ship";
                 $o->save();
+                $gsad = $gsca->street . ',' . $gsca->city . ',' . $gsca->country;
             } else {
 
-
+ $gsca = CustomerAddress::where('cus_id', Auth::user()->id)->where('address_type', 'del')->first();
                 $cusShipStreet = Input::get('street');
                 $cusShipCity = Input::get('city');
                 $cusShipState = Input::get('state');
                 $cusShipCountry = Input::get('country');
                 $cusShipZipCode = Input::get('zip');
                 $cusShipPhoneNo = Input::get('phone');
-
+   $gsad = $cusShipStreet . ',' . $cusShipCity . ',' . $cusShipCountry;
+                 
 
                 $cs = CustomerAddress::where('cus_id', Auth::user()->id)->where('address_type', 'del')->update([
                     'street' => $cusShipStreet,
@@ -678,7 +802,7 @@ class customer extends Controller {
             }
 
 
-             Stripe::setApiKey('sk_live_jNiA2yIBtlA7wZF4oSOFmCng');
+             Stripe::setApiKey('sk_test_dyBI9IPQOXCqRy7dJYZ3YA0h');
             try {
                 
                $charge=Charge::create(array(
@@ -694,6 +818,101 @@ class customer extends Controller {
                
                $o->paymentid=$charge->id;
                $o->save();
+               
+               
+                    $items = array();
+             //   array_push($stack, array("test" => "test"), array("raspberry" => "sad"));
+                // return json_encode($stack);
+                $cartn = unserialize($o->cart);
+                
+                      // $cartn = unserialize($orderinfo->cart);
+               // return $cartn;
+              foreach ($cartn as $item) {
+                    if (!is_array($item)) {
+                        
+                    }else {
+
+                        if ($item['submenu_status'] == 1) {
+                            $iname=$item['food_name'];
+                            $iprice=floatval($item['food_price']);
+                            
+                            $subp=0;
+                            foreach ($item['subitem'] as $s) {
+                                $iname=$iname."(".$s['option'].":".$s['name'].")";
+                                 $subp=$subp+floatval($s['price']);
+                            }
+                           
+                           
+                          
+                             $iprice=$iprice+$subp;
+                             
+                              $i = array(
+                              	
+                                "sku" => $item['food_id'],
+                                "quantity" => $item['quantity'],
+                                "description"=>$iname,
+                                
+                                "price" =>$iprice
+                            );
+                            array_push($items, $i);
+                        } else {
+
+                            $i = array(
+                                "description" => $item['food_name'],
+                                "quantity" => $item['quantity'],
+                                "sku" => $item['food_id'],
+                                
+                                "price" =>$item['food_price']
+                            );
+                            array_push($items, $i);
+                        }
+                    }
+                }
+                
+                
+                
+              $des = "PAID , time & date :" . $o->created_at ;
+
+
+                $gsrest = Restaurant::where('rest_id', $restid)->first();
+                           $client = new GuzzleHttp\Client();
+                $res = $client->request('POST', 'https://app.getswift.co/api/v2/deliveries', [
+                    'json' => [
+                        'apiKey' => "782f3d88-160d-4170-9c0b-c929abe25cc6",
+                        'booking' =>
+                        ['reference'=> "#".$o->order_id,
+                         'deliveryInstructions'=> $des,		
+                         'items'=>$items,
+                            'pickupDetail' =>
+                            [
+                                 'name' => $gsrest->rest_name,
+                                'phone' => $gsrest->rest_phone_no,
+                                
+                                'address' => $gsrest->rest_street.','.$gsrest->rest_city.','.$gsrest->rest_state_province.','.$gsrest->rest_country
+                            ],
+                            'dropoffDetail' =>
+                            [
+                            'name' => Auth::user()->first_name." ".Auth::user()->last_name,
+                                'phone' => $gsca->phone_no,
+                              
+                                'address' =>$gsad
+                               
+                            ],
+                            "webhooks" => [array(
+                            "eventName" => "job/accepted",
+                            "url" => "http://www.test.talkfood.ca/api/dispatch/".$o->order_id
+                                )]
+                        ]
+                    ]
+                ]);
+               
+               
+               
+               
+               
+               
+               
+               
             } catch (Exception $ex) {
 return $ex->getMessage();
             }
@@ -754,7 +973,10 @@ return $ex->getMessage();
 
         $user = User::where('id', Auth::user()->id)->get();
         $cus = CustomerAddress::where('cus_id', Auth::user()->id)->get();
-        return view('customer.account', compact('user', 'cus'));
+        if(!empty($files = glob('uploads/' . Auth::user()->id . '.*'))) {
+            $photo = $files[0];
+        }
+        return view('customer.account', compact('user', 'cus', 'photo'));
     }
 
     public function accountupdate() {
@@ -827,6 +1049,13 @@ return $ex->getMessage();
                 'cus_id' => Auth::user()->id,
                 'address_type' => 'bill',
             ]);
+            if (Input::file('photo')->isValid()) {
+                if(!empty($files = glob('uploads/' . Auth::user()->id . '.*'))) {
+                    $photo = $files[0];
+                    unlink($photo);
+                }
+                Input::file('photo')->move('uploads', Auth::user()->id . '.' . Input::file('photo')->getClientOriginalExtension());
+            }
             return Redirect::to('customer/account')->with('message', 'Account information updated.');
         } else {
             return Redirect::to('customer/account')->with('emessage', 'The following errors occurred')->withErrors($validator);

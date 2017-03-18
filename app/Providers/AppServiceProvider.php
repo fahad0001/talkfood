@@ -24,6 +24,7 @@ class AppServiceProvider extends ServiceProvider
             $r=  \App\Restaurant::where('rest_user_id',\Auth::user()->id)->first();
         $view->with(['currentUser'=> \Auth::user(),'rest'=>$r]);
             }
+           
     });
     
       

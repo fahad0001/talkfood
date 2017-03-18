@@ -307,11 +307,12 @@ class restdashboard extends Controller {
 
         if (Input::file('rlogo')) {
             $destinationPath = 'uploads'; // upload path
-            $imageName = Input::file('rest_logo')->getClientOriginalExtension();
+            $imageName = Input::file('rlogo')->getClientOriginalExtension();
             $fileName = rand(11111, 99999) . '.' . $imageName; // renameing image
-            Input::file('rest_logo')->move($destinationPath, $fileName); // uploading file to given path    
+            Input::file('rlogo')->move($destinationPath, $fileName); // uploading file to given path 
+            $restResp->rest_logo_path = $fileName;            
         }
-        $restResp->rest_logo_path = $fileName;
+        
         $restResp->rest_state_province = Input::get('rstpr');
         $restResp->rest_phone_no = Input::get('phone');
         $restResp->save();

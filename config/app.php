@@ -39,7 +39,7 @@ return [
     |
     */
 
-    'url' =>'http://localhost',
+    'url' =>'https://talkfood.ca',
 
     /*
     |--------------------------------------------------------------------------
@@ -147,8 +147,7 @@ return [
         Illuminate\Translation\TranslationServiceProvider::class,
         Illuminate\Validation\ValidationServiceProvider::class,
         Illuminate\View\ViewServiceProvider::class,
-	    Geocoder\Laravel\Providers\GeocoderService::class,
-        
+	Geocoder\Laravel\Providers\GeocoderService::class,
 
         /*
          * Application Service Providers...

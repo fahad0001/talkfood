@@ -81,6 +81,8 @@
         function search() {
             var lat = '';
             var lng = '';
+
+                    window.location.href = '{{URL::TO('/search')}}/' + 45.9638923 + '/' + -66.6777752;
             var address = $("#searcht").val().toUpperCase();
             //alert(address);
             var geocoder = new google.maps.Geocoder();

@@ -10,7 +10,7 @@
         <div class="box">
             <div class="box-header">
               <h3 class="box-title">Customers</h3>
-              <form action="{{URL::to('admin/search/customer')}}" role="form" method="GET" style="margin-top: -16px;">
+                            <form action="{{URL::to('admin/search/customer')}}" role="form" method="GET" style="margin-top: -16px;">
                 <div class="box-tools pull-right" style="position:relative">
                         <div class="input-group input-group-sm" style="width: 200px;">                            
                             <input type="text" name="search" class="form-control pull-right" placeholder="Search">
@@ -29,7 +29,6 @@
             </div>
             </form>
             </div>
-
             <!-- /.box-header -->
             <div class="box-body table-responsive no-padding">
               <table class="table table-hover">
@@ -52,7 +51,7 @@
                             <td>{{$rest->last_name}}</td>
                             <td>{{$rest->email}}</td>
                             <td><a href="{{URL::to('admin/viewCustomerAddress')}}/{{$rest->id}}">View Deatails</a></td>
-                            <td><a href="{{URL::to('admin/deleteCustomer')}}/{{$rest->id}}">Delete</a></td>
+                            <td><a href="{{URL::to('admin/deleteCustomer')}}/{{$rest->id}}" onclick="return confirm('Are you sure you want to delete {{$rest->first_name}} {{$rest->last_name}}?');">Delete</a></td>
                             </tr>                         
                         @endforeach
                     

@@ -242,11 +242,11 @@
                                 </div>
                             </div>
                         </div>
-                        <h3><b>Is Delivery Address Same as Home Address?</b> <input type="checkbox" name="type" id="additional_check"></h3>
-                        <div id="additional_tab">
+                        <h3><b>Want to give Additional Information?</b> <input type="checkbox" name="type" id="additional_check"></h3>
+                        <div id="additional_tab" style="display:none">
                             <div class="form-group">
-                                <label for="comment">Comment:</label>
-                                <textarea class="form-control" rows="5" id="comment"></textarea>
+                                <label for="comment">Additional Information:</label>
+                                <textarea class="form-control" name="additionalText" rows="5" id="comment"></textarea>
                             </div>
                         </div>
                     </div>
@@ -378,9 +378,7 @@
                             </div>
 
                             <!--<button class="btn btn-primary" type="submit" style='width:100%;'>Place Order<i class='fa fa-arrow-right'></i></button>-->
-                            <button type="button" class="btn btn-primary btn-lg" id="checkoutm">
-Place Order<i class='fa fa-arrow-right'></i>
-</button>
+                            <button type="button" class="btn btn-primary btn-lg" id="checkoutm">Place Order<i class='fa fa-arrow-right'></i></button>
 
                         </div>
 
@@ -469,6 +467,17 @@ Place Order<i class='fa fa-arrow-right'></i>
     $("#delivery_check").click(function () {
     $("#delivery_tab").toggle();
     if ($("#delivery_tab").css('display') == "none") {
+
+    $('#ad').parsley().destroy();
+    }
+    else {
+    $('#ad').parsley();
+    }
+    });
+
+    $("#additional_check").click(function () {
+    $("#additional_tab").toggle();
+    if ($("#additional_tab").css('display') == "none") {
 
     $('#ad').parsley().destroy();
     }

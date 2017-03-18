@@ -66,6 +66,18 @@
                         
                     </div>
                 </div>
+                <div class="form-group">
+                    <label class="control-label col-sm-2" for="email">
+                        Canadian Government ID:
+                        <span data-toggle="tooltip" title="Upload your ID so you can purchase alcohol. Must be over 18 years of age." class="glyphicon glyphicon-info-sign"></span>
+                    </label>
+                    <div class="col-sm-4">
+                        <input type="file" class="form-control" name="photo" placeholder=" Photo" >
+                        @if (isset($photo))
+                        <img src="{{URL::to($photo)}}" width="100"/>
+                        @endif
+                    </div>
+                </div>
 
                 <div id="customer-fields"> 
                     <h4 class="text-center">Home Address</h4>
@@ -171,4 +183,10 @@
 
 @endsection
 
-
+@section('scripts')
+<script>
+$(document).ready(function(){
+    $('[data-toggle="tooltip"]').tooltip({placement: "bottom", trigger: "click"});   
+});
+</script>
+@endsection

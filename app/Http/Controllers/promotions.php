@@ -48,10 +48,10 @@ class promotions extends Controller
             'promotion_setting_id' => (int)Input::get('promotion_setting_id'),
             'code' => $code
         ]);
-        
+
         $promotionSetting = PromotionSetting::find((int)Input::get('promotion_setting_id'));
         $user = User::find((int)Input::get('user_id'));
-        
+
         $data = ['code' => $code, 
             'usage' => $promotionSetting->usage, 
             'name' => $user->first_name . ' ' . $user->last_name, 
@@ -61,11 +61,12 @@ class promotions extends Controller
         Mail::send('emails.promotion', $data, function ($message) use ($data) {
             $message->subject("Promotion Code Access");
             $message->to($data['email']);
+            $message->cc('info@talkfood.org');
         });
-                
+
         return Redirect('/admin/viewCustomerAddress/' . Input::get('user_id'));
     }
-    
+
     public function deletePromotion($id){
 
         $promotion=Promotion::find($id);

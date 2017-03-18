@@ -1,7 +1,3 @@
-<?php
- $page_num   =   (int) (!isset($_GET['page']) ? 1 : $_GET['page']);
- $start_num =((($page_num*15)-15)+1);
- ?>
 @extends('layout.master')
 
 @section('content')
@@ -17,7 +13,7 @@
             <thead>
                 <tr role="row">
                     <th class="sorting_asc" tabindex="0" aria-controls="tbtable" rowspan="1" colspan="1" aria-sort="ascending" aria-label="SrNo: activate to sort column descending" style="width: 33px;">
-                        Id
+                        Customer Id
                     </th>
                     <th class="sorting" tabindex="0" aria-controls="tbtable" rowspan="1" colspan="1" aria-label="Tablename: activate to sort column ascending" style="width: 120px;">
                         Customer name
@@ -40,13 +36,13 @@
                 </tr>
             </thead>
             <tbody>
-                @foreach($orderdetail as $index =>$order)
+                @foreach($orderdetail as $order)
                 <tr role="row" class="odd">
 
-                    <td class="sorting_1">{{$index+$start_num}}</td>
+                    <td class="sorting_1">{{$order['customer']['id']}}</td>
                     <td>{{$order['customer']['first_name']}}</td>
                     <td>{{$order['order_id']}}</td>  
-                    <td>{{$order['created_at']}}</td>
+                    <td>{{$order['order_date']}}</td>
                     <td>{{$order['order_total_amount']}}</td>
                     <td><span class="label label-success">{{$order['order_status']}}</span></td>
                     <td><a href={{URL::to('/admin/vieworderdetails/'.$order['order_id'])}}>View Details</a></td>

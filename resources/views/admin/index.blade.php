@@ -9,7 +9,7 @@
     <div class="col-md-12">
         <div class="box">
             <div class="box-header">
-              <h3 class="box-title">Restuarants</h3>                
+              <h3 class="box-title">Restuarants</h3>
               <div class=" pull-right">              
                   <div class="col-sm-2 dropdown">
                     <button class="btn btn-primary dropdown-toggle" id="menu1" type="button" data-toggle="dropdown">Availability
@@ -49,7 +49,7 @@
                   <th></th>
                    <th></th>
                 </tr>
-               
+                
                         @foreach($rests as $index =>$rest)
                             <tr>
                             <td>{{$index+$start_num}}</td>
@@ -63,7 +63,7 @@
                              <td><a href="{{URL::to('admin')}}/{{$rest->rest_id}}/salereport"> View sales</a></td>
                            
                             <td><a href="{{URL::to('admin/editrest')}}/{{$rest->rest_id}}"> Edit</a></td>
-                             <td><a href="{{URL::to('admin/deleterest')}}/{{$rest->rest_id}}"> Delete</a></td>
+                             <td><a href="{{URL::to('admin/deleterest')}}/{{$rest->rest_id}}" onclick="return confirm('Are you sure you want to delete {{$rest->rest_name}}?');"> Delete</a></td>
                             </tr>                         
                         @endforeach
                     
@@ -86,3 +86,4 @@
     </div>
 </div>
 @stop
+

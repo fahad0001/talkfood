@@ -16,7 +16,7 @@ Restaurant Dashboard
               <h3 class="box-title">Profile Info</h3>
             </div>
 
-            <form class="form-horizontal" action="{{URL::to('/restaurant/edit')}}" role="form" method="POST">
+            <form class="form-horizontal" action="{{URL::to('/restaurant/edit')}}" role="form" method="POST" enctype="multipart/form-data">
             {!! csrf_field() !!}
                 <div class="form-group">
                     <label class="col-md-3 control-label">First Name:</label>

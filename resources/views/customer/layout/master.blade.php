@@ -26,7 +26,7 @@
      <link rel="stylesheet" href="{{URL::asset('css/mystyle.css?v=3')}}">
 
     <!-- Theme CSS -->
-    <link href="{{URL::asset('css/new-age.min.css')}}" rel="stylesheet">
+    <link href="{{URL::asset('css/new-age.min.css?v=1')}}" rel="stylesheet">
      <link rel="stylesheet" href="{{URL::asset('/css/jquery-ui.min.css')}}">
 
    @yield('style')
@@ -37,11 +37,45 @@
         <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
     <![endif]-->
 
+
+ @if(isset($currentUser))
+ 
+ 
+ <script>
+  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+  (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+  m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+  })(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
+
+  ga('create', 'UA-92155609-1', 'auto');
+  ga('set', 'userId', "{{$currentUser->id}}");
+  ga('send', 'pageview');
+
+</script>
+ 
+ 
+ @else
+ 
+<script>
+  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+  (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+  m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+  })(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
+
+  ga('create', 'UA-92155609-1', 'auto');
+  ga('send', 'pageview');
+
+</script>
+
+@endif
+
+
 </head>
 
 <body id="page-top">
 
- 
+
+
 
    @yield('content') 
   
